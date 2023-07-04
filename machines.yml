@@ -1,0 +1,31 @@
+#Jenkins / OWASP ZAP / OpenSCAP 
+- name: testing
+  cpus: 1
+  memory: 3072
+  ip: 192.168.56.10
+  box: 4linux/527-testing
+  script: provisionamento/testing.sh
+
+#Docker / SONARQUBE / Logstash / ModSecurity / Clair
+- name: automation
+  cpus: 1
+  memory: 3072
+  ip: 192.168.56.20
+  box: 4linux/527-automation
+  script: provisionamento/automation.sh
+
+#Elastic Stack / Ansible|Ansible Vault / Hashicorp Vault(Server) / ChatOPS / Rundeck
+- name: logging
+  cpus: 1
+  memory: 4092
+  ip: 192.168.56.30
+  box: 4linux/527-logging
+  script: provisionamento/logging.sh
+
+#Hashicorp Vault(Client) / Terraform / Gauntlt / Kong
+- name: validation
+  cpus: 1
+  memory: 2048
+  ip: 192.168.56.40
+  box: 4linux/527-validation
+  script: provisionamento/validation.sh
