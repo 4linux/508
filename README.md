@@ -1,7 +1,7 @@
-Laboratório - 527 - DevSecOps
+Laboratório - 508 - Seguranca em Servidores Linux - LPIC3-303
 =============================
 
-Repositório para armazenar os arquivos referentes ao Laboratório do curso de DevSecOps da [4Linux][1]
+Repositório para armazenar os arquivos referentes ao Laboratório do curso de Seguranca da [4Linux][1]
 
 Dependências
 ------------
@@ -40,8 +40,8 @@ Criação do Laboratório
 Para criar o laboratório é necessário fazer o `git clone` desse repositório e, dentro da pasta baixada realizar a execução do `vagrant up`, conforme abaixo:
 
 ```bash
-git clone https://github.com/4linux/527
-cd 527/
+git clone https://github.com/4linux/508
+cd 508/
 vagrant up
 ```
 
