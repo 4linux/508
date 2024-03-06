@@ -65,6 +65,7 @@ Comandos                | Descrição
 `vagrant ssh <vm> -c <comando>` | Executa comando via ssh
 `vagrant reload <vm>`   | Reinicia a VM
 `vagrant halt`          | Desliga as VMs
+`vagrant destroy --force` | Força a destruição das VMs criadas
 
 > Para maiores informações acesse a [Documentação do Vagrant][13]
 
