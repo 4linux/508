@@ -31,12 +31,31 @@ else
   echo "[OK] SSH KEY"
 fi
 
+
+# ----------------------------------
+# /var/log/vagrant_provision.log
+# Correção erro:
+# - Error: GPG check FAILED
+
 # Atualizando RPM
-sudo dnf update rpm -y >/dev/null 2>>/var/log/vagrant_provision.log
+# sudo dnf update rpm -y >/dev/null 2>>/var/log/vagrant_provision.log
 
 # Solução temporaria para EOL Centos 8
-sudo rpm -Uhv --nodeps http://mirror.centos.org/centos/8-stream/BaseOS/x86_64/os/Packages/centos-stream-repos-8-3.el8.noarch.rpm http://mirror.centos.org/centos/8-stream/BaseOS/x86_64/os/Packages/centos-gpg-keys-8-3.el8.noarch.rpm http://mirror.centos.org/centos/8-stream/BaseOS/x86_64/os/Packages/centos-stream-release-8.5-3.el8.noarch.rpm >/dev/null 2>>/var/log/vagrant_provision.log
+# sudo rpm -Uhv --nodeps https://mirror.centos.org/centos/8-stream/BaseOS/x86_64/os/Packages/centos-stream-repos-8-3.el8.noarch.rpm http://mirror.centos.org/centos/8-stream/BaseOS/x86_64/os/Packages/centos-gpg-keys-8-3.el8.noarch.rpm http://mirror.centos.org/centos/8-stream/BaseOS/x86_64/os/Packages/centos-stream-release-8.5-3.el8.noarch.rpm >/dev/null 2>>/var/log/vagrant_provision.log
+# ----------------------------------
 
+# Alterando os repositórios do CentOS 8 para o mirror Vault, pois os mirrors oficiais foram depreciados.
+sudo sed -i 's/^mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*
+sudo sed -i 's|^#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*
+
+# Ajustando o repositório Epel-8. countme não é mais permitido.
+sudo sed -i 's/^countme=1/#&/' /etc/yum.repos.d/epel*.repo
+
+# Limpando o cache do repositório
+sudo dnf clean all
+
+# Atualizando o RPM
+sudo dnf update rpm -q -y
 
 
 # Instalando Pacotes
