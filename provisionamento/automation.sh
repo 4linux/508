@@ -5,7 +5,7 @@ LOGSTASH_VERSION="7.13.1"
 LOGSTASH_URL="https://artifacts.elastic.co/downloads/logstash/logstash-${LOGSTASH_VERSION}-amd64.deb"
 DEPS_PACKAGES="apt-transport-https ca-certificates curl gnupg-agent software-properties-common python3 python3-pip vim openjdk-11-jre wget tree"
 PACKAGES="docker-ce docker-compose"
-PIP_PACKAGES="ComplexHTTPServer ansible==2.9"
+PIP_PACKAGES="ComplexHTTPServer ansible==4.10"
 
 
 # Registrando dia do Provision
