@@ -5,7 +5,8 @@ LOGSTASH_VERSION="7.13.1"
 LOGSTASH_URL="https://artifacts.elastic.co/downloads/logstash/logstash-${LOGSTASH_VERSION}-amd64.deb"
 DEPS_PACKAGES="apt-transport-https ca-certificates curl gnupg-agent software-properties-common python3 python3-pip vim openjdk-11-jre wget tree"
 PACKAGES="docker-ce docker-compose"
-PIP_PACKAGES="ComplexHTTPServer ansible"
+PIP_PACKAGES="ComplexHTTPServer ansible==4.10"
+
 
 # Registrando dia do Provision
 sudo date >> /var/log/vagrant_provision.log
@@ -38,6 +39,12 @@ sudo apt-get --allow-releaseinfo-change update -qq >/dev/null 2>>/var/log/vagran
 	sudo apt-get install -qq -y ${DEPS_PACKAGES} ${PACKAGES} >/dev/null 2>>/var/log/vagrant_provision.log
 
 validateCommand "Instalação de Pacotes"
+
+# automation: [ERROR] Pacotes Python
+# The SSH command responded with a non-zero exit status. Vagrant
+# assumes that this means the command failed. The output for this command
+# should be in the log above. Please read the output to determine what
+# went wrong.
 
 # Instalando Pacotes do Python
 pip3 install -q ${PIP_PACKAGES} >/dev/null 2>>/var/log/vagrant_provision.log && \
