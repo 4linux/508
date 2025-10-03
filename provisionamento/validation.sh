@@ -3,8 +3,8 @@
 # Variaveis
 VAULT_SSH_HELPER="0.1.6"
 SSH_HELPER_URL="https://releases.hashicorp.com/vault-ssh-helper/${VAULT_SSH_HELPER}/vault-ssh-helper_${VAULT_SSH_HELPER}_linux_amd64.zip"
-DEPS_PACKAGES="vim python3 python3-pip python-setuptools tree wget curl unzip mlocate gem ruby rubygems ruby-dev zlib1g-dev zlib1g"
-PACKAGES="terraform git nmap dirb postgresql postgresql-client mariadb-server"
+DEPS_PACKAGES="vim python3 python3-pip python3-setuptools tree wget curl unzip mlocate ca-certificates gnupg"
+PACKAGES="git nmap dirb postgresql postgresql-client mariadb-server ruby-full ruby-dev ruby-bundler zlib1g-dev zlib1g"
 
 validateCommand() {
   if [ $? -eq 0 ]; then
@@ -33,6 +33,27 @@ fi
 
 # Instalando Pacotes
 export DEBIAN_FRONTEND=noninteractive
+
+cat >/etc/apt/sources.list <<'EOF'
+deb http://archive.debian.org/debian buster main contrib non-free
+deb-src http://archive.debian.org/debian buster main contrib non-free
+deb http://archive.debian.org/debian-security buster/updates main
+deb-src http://archive.debian.org/debian-security buster/updates main
+EOF
+
+mkdir -p /etc/apt/sources.list.d.disabled
+if [ -d /etc/apt/sources.list.d ]; then
+  mv /etc/apt/sources.list.d/*.list /etc/apt/sources.list.d.disabled/ 2>/dev/null || true
+fi
+
+cat >/etc/apt/apt.conf.d/99no-check-valid-until <<'EOF'
+Acquire::Check-Valid-Until "false";
+EOF
+
+apt-get clean
+rm -rf /var/lib/apt/lists/*
+apt-get -o Acquire::Check-Valid-Until=false update
+
 sudo apt-get --allow-releaseinfo-change update -qq >/dev/null 2>>/var/log/vagrant_provision.log && \
 	sudo apt-get install -qq -y ${DEPS_PACKAGES} ${PACKAGES} >/dev/null 2>>/var/log/vagrant_provision.log
 

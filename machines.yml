@@ -29,3 +29,10 @@
   ip: 192.168.56.40
   box: 4linux/527-validation
   script: provisionamento/validation.sh
+
+- name: kali
+  cpus: 1
+  memory: 2048
+  ip: 192.168.56.50
+  box: kalilinux/rolling
+  script: provisionamento/kali.sh

@@ -4,8 +4,8 @@
 LOGSTASH_VERSION="7.13.1"
 LOGSTASH_URL="https://artifacts.elastic.co/downloads/logstash/logstash-${LOGSTASH_VERSION}-amd64.deb"
 DEPS_PACKAGES="apt-transport-https ca-certificates curl gnupg-agent software-properties-common python3 python3-pip vim openjdk-11-jre wget tree"
-PACKAGES="docker-ce docker-compose"
-PIP_PACKAGES="ComplexHTTPServer ansible"
+PACKAGES="docker.io docker-compose"
+PIP_PACKAGES="ansible"
 
 # Registrando dia do Provision
 sudo date >> /var/log/vagrant_provision.log
@@ -34,6 +34,27 @@ fi
 
 # Instalando Pacotes
 export DEBIAN_FRONTEND=noninteractive
+
+cat >/etc/apt/sources.list <<'EOF'
+deb http://archive.debian.org/debian buster main contrib non-free
+deb-src http://archive.debian.org/debian buster main contrib non-free
+deb http://archive.debian.org/debian-security buster/updates main
+deb-src http://archive.debian.org/debian-security buster/updates main
+EOF
+
+mkdir -p /etc/apt/sources.list.d.disabled
+if [ -d /etc/apt/sources.list.d ]; then
+  mv /etc/apt/sources.list.d/*.list /etc/apt/sources.list.d.disabled/ 2>/dev/null || true
+fi
+
+cat >/etc/apt/apt.conf.d/99no-check-valid-until <<'EOF'
+Acquire::Check-Valid-Until "false";
+EOF
+
+apt-get clean
+rm -rf /var/lib/apt/lists/*
+apt-get -o Acquire::Check-Valid-Until=false update
+
 sudo apt-get --allow-releaseinfo-change update -qq >/dev/null 2>>/var/log/vagrant_provision.log && \
 	sudo apt-get install -qq -y ${DEPS_PACKAGES} ${PACKAGES} >/dev/null 2>>/var/log/vagrant_provision.log
 
